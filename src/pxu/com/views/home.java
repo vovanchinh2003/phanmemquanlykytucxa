@@ -81,9 +81,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         this.setSize(1500, 750);
         this.setLocationRelativeTo(null);
         taophong();
-//        pro();
-        HIENTHIphong();
-        HIENTHI();
+        pro();
         showTime();
         showdate();
         rightmouse();
@@ -123,8 +121,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
             } else {
                 long id = Long.parseLong(maxStudentId.substring(3));
                 id++;
-                txtmasv.setText("C1001" + String.format("%03d", id)); // Format id with leading zeros
-                txtmasv.setEditable(false);
+                txtmasv.setText("C100" + String.format("%03d", id)); // Format id with leading zeros
+//                txtmasv.setEditable(false);
             }
             rs.close();
             s.close();
@@ -143,7 +141,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
             String maxRoomId = rs.getString("max_room_id");
 
             if (maxRoomId == null) {
-                txtmaphong.setText("Phòng 100");
+                txtmaphong.setText("Phòng 01");
             } else {
                 // Extract the numeric part of maxRoomId
                 String numericPart = maxRoomId.replaceAll("\\D+", ""); // Remove non-numeric characters
@@ -151,8 +149,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 if (!numericPart.isEmpty()) {
                     long id = Long.parseLong(numericPart);
                     id++;
-                    txtmaphong.setText("Phòng" + String.format("%03d", id));
-                    txtmaphong.setEditable(false);
+                    txtmaphong.setText("Phòng " + String.format("%01d", id));
+//                    txtmaphong.setEditable(false);
                 } else {
 
                 }
@@ -293,6 +291,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         JMenuItem themp = new JMenuItem("Thuê phòng");
         themp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                HIENTHI();
                 jFrame1.setVisible(true);
             }
         });
@@ -405,6 +404,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 txtmp.setText(roomNumber);
                 Color a = new Color(128, 128, 128);
                 clickedPanel.setBackground(a);
+                HIENTHIphong();
+                HIENTHI();
             }
 
             @Override
@@ -1930,6 +1931,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        txtmaphong.setText("");
         jFrame5.dispose();
     }//GEN-LAST:event_jButton14ActionPerformed
     private void tinhtiendien() {

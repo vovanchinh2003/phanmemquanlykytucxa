@@ -16,14 +16,14 @@ public class RoomDao {
 
     private Connection conn;
 
-    public RoomDao() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/ql_ktxx", "root", "chinh2003");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public RoomDao() {
+//        try {
+//            Class.forName("com.mysql.jdbc.Driver");
+//            conn = DriverManager.getConnection("jdbc:mysql:/localhost/ql_ktx", "root", "chinh2003");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public List<RoomModel> getAllRoom() throws SQLException {
         List<RoomModel> romList = new ArrayList<>();
