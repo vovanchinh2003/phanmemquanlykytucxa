@@ -170,44 +170,35 @@ public class StudentDao {
 
     public static boolean updateStudent(StudentModel student) throws SQLException, ClassNotFoundException {
         Connection conn = connecting.getConnection();
-        try {
-            String sql = "update student set student_name = ?, faculty = ?, major = ?, birth_date = ?, "
-                    + "id_card = ?, phone_number = ?, gender = ?, hometown = ?, room_id = ?, "
-                    + "violation_count = ?, check_in_date = ?, status = ? ,student_image=? where student_id = ?";
+        String sql = "update student set student_name = ?, faculty = ?, major = ?, birth_date = ?, "
+                + "gmail = ?, phone_number = ?, gender = ?, hometown = ?,  "
+                + "violation_count = ?, check_in_date = ?,student_image=? where student_id = ?";
 
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, student.getStudent_name());
-            pstmt.setString(2, student.getFaculty());
-            pstmt.setString(3, student.getMajor());
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            String ngaysinh = df.format(student.getBirth_date());
-            pstmt.setString(4, ngaysinh);
-            pstmt.setString(5, student.getGmail());
-            pstmt.setString(6, student.getPhone_number());
-            pstmt.setString(7, student.getGender());
-            pstmt.setString(8, student.getHometown());
-            pstmt.setString(9, student.getRoom_id());
-            pstmt.setInt(10, student.getViolation_count());
-            DateFormat dff = new SimpleDateFormat("yyyy-MM-dd");
-            String ngayvao = dff.format(student.getCheck_in_date());
-            pstmt.setString(11, ngayvao);
-            pstmt.setString(12, student.getStatus());
-            if (student.getStudent_image() != null) {
-                Blob hinh = new SerialBlob(student.getStudent_image());
-                pstmt.setBlob(13, hinh);
-            } else {
-                Blob hinh = null;
-                pstmt.setBlob(13, hinh);
-            }
-            pstmt.setString(14, student.getStudent_id());
-            int rowsAffected = pstmt.executeUpdate();
-            pstmt.close();
-            conn.close();
-            return rowsAffected > 0;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, student.getStudent_name());
+        pstmt.setString(2, student.getFaculty());
+        pstmt.setString(3, student.getMajor());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String ngaysinh = df.format(student.getBirth_date());
+        pstmt.setString(4, ngaysinh);
+        pstmt.setString(5, student.getGmail());
+        pstmt.setString(6, student.getPhone_number());
+        pstmt.setString(7, student.getGender());
+        pstmt.setString(8, student.getHometown());
+        pstmt.setInt(9, student.getViolation_count());
+        DateFormat dff = new SimpleDateFormat("yyyy-MM-dd");
+        String ngayvao = dff.format(student.getCheck_in_date());
+        pstmt.setString(10, ngayvao);
+        if (student.getStudent_image() != null) {
+            Blob hinh = new SerialBlob(student.getStudent_image());
+            pstmt.setBlob(11, hinh);
+        } else {
+            Blob hinh = null;
+            pstmt.setBlob(11, hinh);
         }
+        pstmt.setString(12, student.getStudent_id());
+        return pstmt.executeUpdate() > 0;
+
     }
 
 }

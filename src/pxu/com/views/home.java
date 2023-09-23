@@ -272,7 +272,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private JPopupMenu createContextMenu() {
         JPopupMenu popup = new JPopupMenu();
 //         Replace these comments with your actual menu items
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/hoadon.png"))); // NOI18N
+//        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/hoadon.png"))); // NOI18N
 
         ImageIcon icon = new ImageIcon(getClass().getResource("/pxu/com/images/xem.jpg"));
         JMenuItem XEMHDD = new JMenuItem("Xem chi tiết thuê phòng", icon);
@@ -397,7 +397,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         panel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         panel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         int numberOfGuests = resultSet.getInt("occupancy_count");
-        Color backgroundColor = (numberOfGuests > 0) ? new Color(128, 0, 0) : new Color(0, 0, 128);
+        Color backgroundColor = (numberOfGuests > 0) ? new Color(34, 139, 34) : new Color(255, 69, 0);
         panel.setBackground(backgroundColor);
         // Thêm sự kiện xử lý chuột cho panel
         panel.addMouseListener(new MouseAdapter() {
@@ -409,6 +409,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 String roomNumber = roomNumberLabel.getText();
                 // Hiển thị thông tin phòng hoặc thực hiện các hành động khác
                 txtmp.setText(roomNumber);
+                txtmaphongsvdango.setText(roomNumber);
                 Color a = new Color(128, 128, 128);
                 clickedPanel.setBackground(a);
                 HIENTHIphong();
@@ -442,7 +443,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
             iconLabel.setIcon(icon);
             // nút nhận sự kiện
             panel.addMouseListener(this);
-            
+
             panel.add(label1);
             panel.add(label2);
             panel.add(label3);
@@ -583,12 +584,12 @@ public class home extends javax.swing.JFrame implements MouseListener {
 
     private void capnhatsonguoiphongcu() {
         try {
-            String sqlsqlc = "select * from room where room_id=N'" + txtmp.getText() + "'";
+            String sqlsqlc = "select * from room where room_id=N'" + txtmaphongsvdango.getText() + "'";
             Connection conn = connecting.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sqlsqlc);
             if (rs.next()) {
-                String sqlUpdate = "UPDATE room SET occupancy_count=" + (rs.getInt("occupancy_count") - 1) + " where  room_id=N'" + txtmp.getText() + "'";
+                String sqlUpdate = "UPDATE room SET occupancy_count=" + (rs.getInt("occupancy_count") - 1) + " where  room_id=N'" + txtmaphongsvdango.getText() + "'";
                 stmt.executeUpdate(sqlUpdate);
             }
 //            JOptionPane.showMessageDialog(rootPane, "Trả phòng thành công !!!");
@@ -624,6 +625,12 @@ public class home extends javax.swing.JFrame implements MouseListener {
 
         jFrame2 = new javax.swing.JFrame();
         jPanel11 = new javax.swing.JPanel();
+        jPanel42 = new javax.swing.JPanel();
+        jPanel43 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        txtmaphongsvdango = new javax.swing.JLabel();
+        jPanel44 = new javax.swing.JPanel();
+        jPanel45 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jFrame1 = new javax.swing.JFrame();
@@ -790,6 +797,33 @@ public class home extends javax.swing.JFrame implements MouseListener {
 
         jPanel11.setLayout(new java.awt.BorderLayout());
 
+        jPanel42.setLayout(new java.awt.CardLayout());
+
+        jPanel43.setBackground(new java.awt.Color(204, 0, 204));
+        jPanel43.setLayout(new java.awt.GridLayout());
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel11.setText("Sinh viên trong phòng: ");
+        jLabel11.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel11.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel43.add(jLabel11);
+
+        txtmaphongsvdango.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtmaphongsvdango.setForeground(new java.awt.Color(255, 255, 255));
+        txtmaphongsvdango.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        txtmaphongsvdango.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel43.add(txtmaphongsvdango);
+
+        jPanel42.add(jPanel43, "card2");
+
+        jPanel11.add(jPanel42, java.awt.BorderLayout.PAGE_START);
+
+        jPanel44.setLayout(new java.awt.CardLayout(10, 20));
+
+        jPanel45.setLayout(new java.awt.BorderLayout());
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -808,7 +842,11 @@ public class home extends javax.swing.JFrame implements MouseListener {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel11.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel45.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel44.add(jPanel45, "card2");
+
+        jPanel11.add(jPanel44, java.awt.BorderLayout.CENTER);
 
         jFrame2.getContentPane().add(jPanel11, java.awt.BorderLayout.CENTER);
 
@@ -1032,7 +1070,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jPanel14.add(txtmasv1);
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel27.setText("Mã phòng:");
+        jLabel27.setText("Mã phòng mới:");
         jPanel14.add(jLabel27);
 
         jPanel14.add(combomap);
@@ -1471,7 +1509,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         panel1.setLayout(new java.awt.GridLayout(4, 0));
         scrollPane1.add(panel1);
 
-        jPanel39.setBackground(new java.awt.Color(128, 0, 0));
+        jPanel39.setBackground(new java.awt.Color(34, 139, 3));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -1494,7 +1532,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 .addGap(41, 41, 41))
         );
 
-        jPanel40.setBackground(new java.awt.Color(0, 0, 128));
+        jPanel40.setBackground(new java.awt.Color(255, 69, 0));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -1550,10 +1588,13 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1318, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel39, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel40, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel41, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel39, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel41, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jPanel40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1568,9 +1609,9 @@ public class home extends javax.swing.JFrame implements MouseListener {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
+                        .addGap(31, 31, 31)
                         .addComponent(jPanel40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(32, 32, 32)
                         .addComponent(jPanel41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -1627,24 +1668,6 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        try {
-            int row = jTable1.getSelectedRow();
-            if (row >= 0) {
-                String maSV = (String) jTable1.getValueAt(row, 0);
-                StudentDao dao = new StudentDao();
-                StudentModel p = dao.FindManv(maSV);
-                if (dao != null) {
-                    txtmasv1.setText(p.getStudent_id());
-                    txtmasv2.setText(p.getStudent_id());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(rootPane, "looix");
-        }
-    }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jFrame1.dispose();
@@ -2074,6 +2097,24 @@ public class home extends javax.swing.JFrame implements MouseListener {
 
     }//GEN-LAST:event_jMenu1ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        try {
+            int row = jTable1.getSelectedRow();
+            if (row >= 0) {
+                String maSV = (String) jTable1.getValueAt(row, 0);
+                StudentDao dao = new StudentDao();
+                StudentModel p = dao.FindManv(maSV);
+                if (dao != null) {
+                    txtmasv1.setText(p.getStudent_id());
+                    txtmasv2.setText(p.getStudent_id());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "looix");
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -2152,6 +2193,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JFrame jFrame6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -2236,6 +2278,10 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
+    private javax.swing.JPanel jPanel42;
+    private javax.swing.JPanel jPanel43;
+    private javax.swing.JPanel jPanel44;
+    private javax.swing.JPanel jPanel45;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -2270,6 +2316,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private javax.swing.JTextField txtid;
     private javax.swing.JLabel txtmand;
     private javax.swing.JTextField txtmaphong;
+    private javax.swing.JLabel txtmaphongsvdango;
     private javax.swing.JTextField txtmasv;
     private javax.swing.JTextField txtmasv1;
     private javax.swing.JTextField txtmasv2;

@@ -637,12 +637,11 @@ public class student extends javax.swing.JFrame {
             bk.setStudent_name(txtTenSV.getText());
             bk.setPhone_number(txtSDT.getText().replace("-", ""));
             bk.setHometown(cbDiaChi.getSelectedItem().toString());
-            bk.setStatus(cbTrangThai.getSelectedItem().toString());
+//            bk.setStatus(cbTrangThai.getSelectedItem().toString());
             bk.setGmail(txtCCCD.getText());
             bk.setGender(cbGT.getSelectedItem().toString());
             bk.setFaculty(cbKhoa.getSelectedItem().toString());
             bk.setMajor(cbNganh.getSelectedItem().toString());
-            bk.setRoom_id(cbPhong.getSelectedItem().toString());
             bk.setBirth_date(birthdate.getDate());
             bk.setCheck_in_date(checkoutdate.getDate());
             bk.setStudent_image(resonalImage);
@@ -659,6 +658,7 @@ public class student extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(student.class.getName()).log(Level.SEVERE, null, ex);
         }
+        jFrame2.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
