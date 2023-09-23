@@ -15,9 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,22 +40,22 @@ import pxu.com.connect.Image_nckh;
 import pxu.com.dao.CrarentalDao;
 import pxu.com.dao.UserDao;
 import pxu.com.dialogchek.imageheiper;
-import pxu.com.dialogchek.showuser;
 import pxu.com.model.CrarentalModel;
 import pxu.com.model.UserModel;
 
 /**
  *
- * @author chinh
+ * @author vvc13
  */
 public class user extends javax.swing.JFrame {
-    
+
     private ArrayList<UserModel> userModels;
     private DefaultTableModel tblModel;
     private TableRowSorter sorter;
+    private byte[] resonalImage;
 
     /**
-     * Creates new form Quanlynhaxe
+     * Creates new form user1
      */
     public user() throws SQLException, ClassNotFoundException {
         initComponents();
@@ -69,9 +67,9 @@ public class user extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         jFrame2.setSize(900, 180);
         jFrame3.setSize(900, 180);
-        
+
     }
-    
+
     private void chuotphaijtable() {
         tblnhanSu.addMouseListener(new MouseAdapter() {
             @Override
@@ -113,13 +111,13 @@ public class user extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void initTable() {
         tblModel = new DefaultTableModel();
         tblModel.setColumnIdentifiers(new String[]{"Mã nhân viên", "Họ và tên", "Địa chỉ", "SĐT", "Vai trò", "Tên tài khoản", "Mật khẩu"});
         tblnhanSu.setModel(tblModel);
     }
-    
+
     private void LoadnhaxeTable() throws SQLException, ClassNotFoundException {
         userModels = UserDao.getall();
         sorter = new TableRowSorter(tblModel);
@@ -131,19 +129,19 @@ public class user extends javax.swing.JFrame {
         }
         tblModel.fireTableDataChanged();
     }
-    
+
     private void timkiem() {
         txtTimHoTen.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 search(txtTimHoTen.getText());
             }
-            
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 search(txtTimHoTen.getText());
             }
-            
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 search(txtTimHoTen.getText());
@@ -505,8 +503,7 @@ public class user extends javax.swing.JFrame {
 
         jFrame3.getContentPane().add(jPanel19, java.awt.BorderLayout.CENTER);
 
-        setTitle("Quản lý nhà xe");
-        setMinimumSize(new java.awt.Dimension(710, 422));
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -592,42 +589,7 @@ public class user extends javax.swing.JFrame {
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jFrame3.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void tblnhanSuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblnhanSuMouseClicked
-        try {
-            int row = tblnhanSu.getSelectedRow();
-            if (row >= 0) {
-                String tennhansu = String.valueOf(tblnhanSu.getValueAt(row, 0));
-                UserDao dk = new UserDao();
-                UserModel b = dk.FindManv(tennhansu);
-                txtMaNS.setText(b.getUser_id());
-                txtTenNS.setText(b.getFull_name());
-                txtSDT.setText(b.getPhone_number());
-                cbDiaChi.setSelectedItem(b.getAddress());
-                txtTTK.setText(b.getUsername());
-                cbVaiTro.setSelectedItem(b.getPosition());
-                txtPW.setText(b.getPassword());
-                if (b.getUser_image() != null) {
-                    Image img = Image_nckh.createImageFromByteArray(b.getUser_image(), "jpg");
-                    lblanh.setIcon(new ImageIcon(img));
-                    resonalImage = b.getUser_image();
-                } else {
-                    resonalImage = b.getUser_image();
-//                        ImageIcon icon = new ImageIcon(getClass()
-//                            .getResource("/com/teamvietdev/qlhv/images/cute.jpg"));
-//                        jLabel10.setIcon(icon);
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }        // TODO add 
-    }//GEN-LAST:event_tblnhanSuMouseClicked
 
     private void txtMaNSKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaNSKeyReleased
 
@@ -648,39 +610,6 @@ public class user extends javax.swing.JFrame {
     private void cbDiaChiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDiaChiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbDiaChiActionPerformed
-    private byte[] resonalImage;
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        chooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                } else {
-                    return f.getName().toLowerCase().endsWith(".jpg");
-                }
-            }
-            
-            @Override
-            public String getDescription() {
-                return "Image File (*.jpg)";
-            }
-        });
-        if (chooser.showOpenDialog(rootPane) == JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-        File file = chooser.getSelectedFile();
-        try {
-            ImageIcon icon = new ImageIcon(file.getPath());
-            Image img = imageheiper.resize(icon.getImage(), 313, 271);
-            ImageIcon resizeIcon = new ImageIcon(img);
-            lblanh.setIcon(resizeIcon);
-            resonalImage = imageheiper.toByteArray(img, "jpg");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(rootPane, "looix");
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         StringBuilder sb = new StringBuilder();
@@ -705,7 +634,7 @@ public class user extends javax.swing.JFrame {
             dk.update(bk);
             LoadnhaxeTable();
             JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công !");
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Sản Phẩm Này đã tồn tại trong cửa hàng.");
             e.printStackTrace();
@@ -716,51 +645,37 @@ public class user extends javax.swing.JFrame {
         jFrame2.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        try {
-            JFileChooser jFileChooser = new JFileChooser();
-            jFileChooser.showSaveDialog(this);
-            File saveFile = jFileChooser.getSelectedFile();
-            
-            if (saveFile != null) {
-                saveFile = new File(saveFile.toString() + ".xlsx");
-                Workbook wb = new XSSFWorkbook();
-                Sheet sheet = wb.createSheet("customer");
-
-                // Tạo hàng tiêu đề cho bảng
-                Row rowCol = sheet.createRow(0);
-                for (int i = 0; i < tblnhanSu.getColumnCount(); i++) {
-                    Cell cell = rowCol.createCell(i);
-                    cell.setCellValue(tblnhanSu.getColumnName(i));
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    return f.getName().toLowerCase().endsWith(".jpg");
                 }
-
-                // Lấy tất cả dữ liệu từ bảng
-                for (int j = 0; j < tblnhanSu.getRowCount(); j++) {
-                    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tblnhanSu.getModel());
-                    tblnhanSu.setRowSorter(sorter);
-                    int modelRow = tblnhanSu.convertRowIndexToModel(j);
-                    Row row = sheet.createRow(j + 1);
-                    for (int k = 0; k < tblnhanSu.getColumnCount(); k++) {
-                        Object cellValue = tblnhanSu.getModel().getValueAt(modelRow, k);
-                        Cell cell = row.createCell(k);
-                        if (cellValue != null) {
-                            cell.setCellValue(cellValue.toString());
-                        }
-                    }
-                }
-                
-                FileOutputStream out = new FileOutputStream(saveFile);
-                wb.write(out);
-                out.close();
-                openFile(saveFile.toString());
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
 
-    }//GEN-LAST:event_jButton7ActionPerformed
+            @Override
+            public String getDescription() {
+                return "Image File (*.jpg)";
+            }
+        });
+        if (chooser.showOpenDialog(rootPane) == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+        File file = chooser.getSelectedFile();
+        try {
+            ImageIcon icon = new ImageIcon(file.getPath());
+            Image img = imageheiper.resize(icon.getImage(), 313, 271);
+            ImageIcon resizeIcon = new ImageIcon(img);
+            lblanh.setIcon(resizeIcon);
+            resonalImage = imageheiper.toByteArray(img, "jpg");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(rootPane, "looix");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtMaNS1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaNS1KeyReleased
         // TODO add your handling code here:
@@ -805,7 +720,7 @@ public class user extends javax.swing.JFrame {
             dk.insertin(bk);
             LoadnhaxeTable();
             JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công !");
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Sản Phẩm Này đã tồn tại trong cửa hàng.");
             e.printStackTrace();
@@ -819,6 +734,51 @@ public class user extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        try {
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.showSaveDialog(this);
+            File saveFile = jFileChooser.getSelectedFile();
+
+            if (saveFile != null) {
+                saveFile = new File(saveFile.toString() + ".xlsx");
+                Workbook wb = new XSSFWorkbook();
+                Sheet sheet = wb.createSheet("customer");
+
+                // Tạo hàng tiêu đề cho bảng
+                Row rowCol = sheet.createRow(0);
+                for (int i = 0; i < tblnhanSu.getColumnCount(); i++) {
+                    Cell cell = rowCol.createCell(i);
+                    cell.setCellValue(tblnhanSu.getColumnName(i));
+                }
+
+                // Lấy tất cả dữ liệu từ bảng
+                for (int j = 0; j < tblnhanSu.getRowCount(); j++) {
+                    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tblnhanSu.getModel());
+                    tblnhanSu.setRowSorter(sorter);
+                    int modelRow = tblnhanSu.convertRowIndexToModel(j);
+                    Row row = sheet.createRow(j + 1);
+                    for (int k = 0; k < tblnhanSu.getColumnCount(); k++) {
+                        Object cellValue = tblnhanSu.getModel().getValueAt(modelRow, k);
+                        Cell cell = row.createCell(k);
+                        if (cellValue != null) {
+                            cell.setCellValue(cellValue.toString());
+                        }
+                    }
+                }
+
+                FileOutputStream out = new FileOutputStream(saveFile);
+                wb.write(out);
+                out.close();
+                openFile(saveFile.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
     public void openFile(String file) {
         try {
             File path = new File(file);
@@ -827,6 +787,40 @@ public class user extends javax.swing.JFrame {
             System.out.println(ioe);
         }
     }
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jFrame3.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tblnhanSuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblnhanSuMouseClicked
+        try {
+            int row = tblnhanSu.getSelectedRow();
+            if (row >= 0) {
+                String tennhansu = String.valueOf(tblnhanSu.getValueAt(row, 0));
+                UserDao dk = new UserDao();
+                UserModel b = dk.FindManv(tennhansu);
+                txtMaNS.setText(b.getUser_id());
+                txtTenNS.setText(b.getFull_name());
+                txtSDT.setText(b.getPhone_number());
+                cbDiaChi.setSelectedItem(b.getAddress());
+                txtTTK.setText(b.getUsername());
+                cbVaiTro.setSelectedItem(b.getPosition());
+                txtPW.setText(b.getPassword());
+                if (b.getUser_image() != null) {
+                    Image img = Image_nckh.createImageFromByteArray(b.getUser_image(), "jpg");
+                    lblanh.setIcon(new ImageIcon(img));
+                    resonalImage = b.getUser_image();
+                } else {
+                    resonalImage = b.getUser_image();
+                    //                        ImageIcon icon = new ImageIcon(getClass()
+                    //                            .getResource("/com/teamvietdev/qlhv/images/cute.jpg"));
+                    //                        jLabel10.setIcon(icon);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }        // TODO add
+    }//GEN-LAST:event_tblnhanSuMouseClicked
 
     /**
      * @param args the command line arguments
@@ -853,20 +847,6 @@ public class user extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

@@ -81,7 +81,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         this.setSize(1500, 750);
         this.setLocationRelativeTo(null);
         taophong();
-        pro();
+//        pro();
         showTime();
         showdate();
         rightmouse();
@@ -272,7 +272,10 @@ public class home extends javax.swing.JFrame implements MouseListener {
     private JPopupMenu createContextMenu() {
         JPopupMenu popup = new JPopupMenu();
 //         Replace these comments with your actual menu items
-        JMenuItem XEMHDD = new JMenuItem("Xem chi tiết thuê phòng");
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pxu/com/images/hoadon.png"))); // NOI18N
+
+        ImageIcon icon = new ImageIcon(getClass().getResource("/pxu/com/images/xem.jpg"));
+        JMenuItem XEMHDD = new JMenuItem("Xem chi tiết thuê phòng", icon);
         XEMHDD.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -285,27 +288,30 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 }
             }
         });
-        Color XEMHDDh = new Color(0, 128, 0);
-        XEMHDD.setForeground(XEMHDDh);
+//        Color XEMHDDh = new Color(0, 128, 0);
+//        XEMHDD.setForeground(XEMHDDh);
         popup.add(XEMHDD);
-        JMenuItem themp = new JMenuItem("Thuê phòng");
+        ImageIcon icona = new ImageIcon(getClass().getResource("/pxu/com/images/moi.png"));
+        JMenuItem themp = new JMenuItem("Thuê phòng", icona);
         themp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 HIENTHI();
                 jFrame1.setVisible(true);
             }
         });
-        Color thempp = new Color(0, 128, 0);
-        themp.setForeground(thempp);
+//        Color thempp = new Color(0, 128, 0);
+//        themp.setForeground(thempp);
         popup.add(themp);
-        JMenuItem themphong = new JMenuItem("Thêm phòng");
+        ImageIcon icond = new ImageIcon(getClass().getResource("/pxu/com/images/hoatdong1.png"));
+        JMenuItem themphong = new JMenuItem("Thêm phòng", icond);
         themphong.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jFrame5.setVisible(true);
             }
         });
         popup.add(themphong);
-        JMenuItem xoaphong = new JMenuItem("Xoá phòng");
+        ImageIcon icons = new ImageIcon(getClass().getResource("/pxu/com/images/exit.png"));
+        JMenuItem xoaphong = new JMenuItem("Xoá phòng", icons);
         xoaphong.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -320,10 +326,11 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 }
             }
         });
-        Color xoaphongp = new Color(255, 0, 0);
-        xoaphong.setForeground(xoaphongp);
+//        Color xoaphongp = new Color(255, 0, 0);
+//        xoaphong.setForeground(xoaphongp);
         popup.add(xoaphong);
-        JMenuItem diennuoc = new JMenuItem("Tính điện nước");
+        ImageIcon iconw = new ImageIcon(getClass().getResource("/pxu/com/images/dn.png"));
+        JMenuItem diennuoc = new JMenuItem("Tính điện nước", iconw);
         diennuoc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -337,8 +344,8 @@ public class home extends javax.swing.JFrame implements MouseListener {
                 }
             }
         });
-        Color diennuocn = new Color(0, 0, 0);
-        diennuoc.setForeground(diennuocn);
+//        Color diennuocn = new Color(0, 0, 0);
+//        diennuoc.setForeground(diennuocn);
         popup.add(diennuoc);
         return popup;
     }
@@ -425,17 +432,22 @@ public class home extends javax.swing.JFrame implements MouseListener {
             int songiuong = resultSet.getInt("bed_count");
 //            double giatien = resultSet.getInt("room_price");
             String loaiphong = resultSet.getString("room_type");
+
             JLabel label1 = createLabel(maphong);
             JLabel label2 = createLabel("Số người: " + String.valueOf(songuoi));
             JLabel label3 = createLabel("Loại phòng: " + String.valueOf(loaiphong));
             JLabel label4 = createLabel("Số giường: " + String.valueOf(songiuong));
+            JLabel iconLabel = createLabel("");
+            ImageIcon icon = new ImageIcon(getClass().getResource("/pxu/com/images/phong.png"));
+            iconLabel.setIcon(icon);
             // nút nhận sự kiện
             panel.addMouseListener(this);
-
+            
             panel.add(label1);
             panel.add(label2);
             panel.add(label3);
             panel.add(label4);
+            panel.add(iconLabel);
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -448,7 +460,6 @@ public class home extends javax.swing.JFrame implements MouseListener {
         label.setForeground(Color.WHITE);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
-
         return label;
     }
 
