@@ -33,7 +33,7 @@ import org.jfree.data.general.DefaultPieDataset;
  */
 public class thongke extends javax.swing.JFrame {
 
-    private final String DB_URL = "jdbc:mysql://localhost:3306/ql_ktxx";
+    private final String DB_URL = "jdbc:mysql://localhost:3306/ql_ktx";
     private final String DB_USER = "root";
     private final String DB_PASSWORD = "chinh@2003";
 

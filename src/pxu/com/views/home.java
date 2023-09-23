@@ -81,7 +81,7 @@ public class home extends javax.swing.JFrame implements MouseListener {
         this.setSize(1500, 750);
         this.setLocationRelativeTo(null);
         taophong();
-//        pro();
+        pro();
         showTime();
         showdate();
         rightmouse();
@@ -924,14 +924,14 @@ public class home extends javax.swing.JFrame implements MouseListener {
         jLabel18.setText("Khoa:");
         jPanel24.add(jLabel18);
 
-        combokhoa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CN-KD" }));
+        combokhoa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Công Nghệ - Kinh Doanh", "Ngôn Ngữ - Du Lịch" }));
         jPanel24.add(combokhoa);
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel19.setText("Ngành:");
         jPanel24.add(jLabel19);
 
-        combonganh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CNTT", "QT-KD" }));
+        combonganh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Công Nghệ Thông Tin", "Quản Trị - Kinh Doanh", "Công Nghệ Ô Tô", "Ngôn Ngữ Anh", "Ngôn Ngữ Trung Quốc" }));
         jPanel24.add(combonganh);
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N

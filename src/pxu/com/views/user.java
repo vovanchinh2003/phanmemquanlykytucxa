@@ -503,8 +503,6 @@ public class user extends javax.swing.JFrame {
 
         jFrame3.getContentPane().add(jPanel19, java.awt.BorderLayout.CENTER);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setLayout(new java.awt.CardLayout(100, 15));
