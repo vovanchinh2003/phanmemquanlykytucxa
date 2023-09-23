@@ -24,7 +24,7 @@ public class UserDao {
 
     public UserModel checkLogin(String username, String password) throws SQLException, ClassNotFoundException {
         String sql = "select user_id, full_name,username,password,position from users"
-                + " where username=? and password=?";
+                + " where username=? and password=md5(?)";
         try (
                 Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, username);
@@ -107,6 +107,10 @@ public class UserDao {
                     users.setPosition(rs.getString("position"));
                     users.setUsername(rs.getString("username"));
                     users.setPassword(rs.getString("password"));
+                    Blob blob = rs.getBlob("user_image");
+                    if (blob != null) {
+                        users.setUser_image(blob.getBytes(1, (int) blob.length()));
+                    }
                     return users;
                 }
             }

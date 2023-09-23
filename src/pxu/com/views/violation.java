@@ -5,10 +5,15 @@ package pxu.com.views;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -18,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -25,7 +31,13 @@ import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pxu.com.connect.connecting;
 import pxu.com.dao.ViolationDao;
 import pxu.com.dialogchek.showuser;
@@ -221,8 +233,9 @@ public class violation extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         txtTimHoTen = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -519,6 +532,17 @@ public class violation extends javax.swing.JFrame {
 
         jPanel7.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
 
+        jButton3.setBackground(new java.awt.Color(0, 0, 153));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Xuất excel");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton3);
+
         jButton2.setBackground(new java.awt.Color(0, 255, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
@@ -530,10 +554,11 @@ public class violation extends javax.swing.JFrame {
         });
         jPanel7.add(jButton2);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Tìm kiếm:");
-        jPanel7.add(jLabel1);
+        jButton1.setBackground(new java.awt.Color(255, 153, 0));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Tìm kiếm:");
+        jPanel7.add(jButton1);
         jPanel7.add(txtTimHoTen);
 
         jPanel2.add(jPanel7, "card2");
@@ -678,6 +703,59 @@ public class violation extends javax.swing.JFrame {
         jFrame2.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.showSaveDialog(this);
+            File saveFile = jFileChooser.getSelectedFile();
+
+            if (saveFile != null) {
+                saveFile = new File(saveFile.toString() + ".xlsx");
+                Workbook wb = new XSSFWorkbook();
+                Sheet sheet = wb.createSheet("customer");
+
+                // Tạo hàng tiêu đề cho bảng
+                Row rowCol = sheet.createRow(0);
+                for (int i = 0; i < tablekyluat.getColumnCount(); i++) {
+                    Cell cell = rowCol.createCell(i);
+                    cell.setCellValue(tablekyluat.getColumnName(i));
+                }
+
+                // Lấy tất cả dữ liệu từ bảng
+                for (int j = 0; j < tablekyluat.getRowCount(); j++) {
+                    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tablekyluat.getModel());
+                    tablekyluat.setRowSorter(sorter);
+                    int modelRow = tablekyluat.convertRowIndexToModel(j);
+                    Row row = sheet.createRow(j + 1);
+                    for (int k = 0; k < tablekyluat.getColumnCount(); k++) {
+                        Object cellValue = tablekyluat.getModel().getValueAt(modelRow, k);
+                        Cell cell = row.createCell(k);
+                        if (cellValue != null) {
+                            cell.setCellValue(cellValue.toString());
+                        }
+                    }
+                }
+                FileOutputStream out = new FileOutputStream(saveFile);
+                wb.write(out);
+                out.close();
+                openFile(saveFile.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+    public void openFile(String file) {
+        try {
+            File path = new File(file);
+            Desktop.getDesktop().open(path);
+        } catch (IOException ioe) {
+            System.out.println(ioe);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -729,14 +807,15 @@ public class violation extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> combokl1;
     private com.toedter.calendar.JDateChooser datevipham;
     private com.toedter.calendar.JDateChooser datevipham1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

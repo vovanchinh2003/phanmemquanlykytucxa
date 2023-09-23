@@ -18,24 +18,24 @@ import javax.imageio.ImageIO;
  */
 public class Image_nckh {
 
-    public static Image resize(Image ogizinalimage, int targetWidth, int targetHeight) {
-        Image resultingImage = ogizinalimage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+    public static Image resize(Image originalImage, int targetWidth, int targetHeight) {
+        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
         return resultingImage;
     }
 
-    public static byte[] toByteArray(Image img, String type) throws IOException {
+    public static byte[] toByteArray(Image img, String tybe) throws IOException {
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bimage.createGraphics();
         g.drawImage(img, 0, 0, null);
         g.dispose();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(bimage, type, baos);
-        byte[] imageInByte = baos.toByteArray();
-        return imageInByte;
+        ImageIO.write(bimage, tybe, baos);
+        byte[] imageIntByte = baos.toByteArray();
+        return imageIntByte;
     }
 
-    public static Image createImageFromByteArray(byte[] data, String type) throws IOException {
+    public static Image createImageFromByteArray(byte[] data, String tybe) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
         BufferedImage bImage2 = ImageIO.read(bis);
         Image img = bImage2.getScaledInstance(bImage2.getWidth(), bImage2.getHeight(), Image.SCALE_SMOOTH);

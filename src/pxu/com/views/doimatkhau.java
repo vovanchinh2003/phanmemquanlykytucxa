@@ -176,7 +176,7 @@ public class doimatkhau extends javax.swing.JFrame {
             try {
                 if (checktk()) {
                     if (String.valueOf(mk1.getPassword()).equals(String.valueOf(mk2.getPassword()))) {
-                        String sqlChange = "UPDATE USERS SET password=? WHERE username=N'" + jComboBox1.getText() + "'";
+                        String sqlChange = "UPDATE USERS SET password=md5(?) WHERE username=N'" + jComboBox1.getText() + "'";
                         try {
                             Connection conn = connecting.getConnection();
                             PreparedStatement pst = conn.prepareStatement(sqlChange);
@@ -203,7 +203,7 @@ public class doimatkhau extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

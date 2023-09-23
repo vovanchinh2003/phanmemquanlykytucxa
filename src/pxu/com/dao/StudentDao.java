@@ -62,7 +62,7 @@ public class StudentDao {
         String sql = "INSERT INTO student (student_id,student_name,faculty,major,birth_date,gmail,phone_number,"
                 + " gender,hometown,room_id,violation_count,"
                 + " check_in_date,status,student_image) VALUES (?,?, ?, ?, ?, ?,?,?,?,?,?,?,?,?)";
-        try ( Connection conn = connecting.getConnection();  PreparedStatement prstt = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, s.getStudent_id());
             prstt.setString(2, s.getStudent_name());
             prstt.setString(3, s.getFaculty());
@@ -94,7 +94,7 @@ public class StudentDao {
     public boolean update(StudentModel s) throws SQLException, ClassNotFoundException {
         String sql = "UPDATE student set room_id=?"
                 + " where student_id=?";
-        try ( Connection conn = connecting.getConnection();  PreparedStatement prstt = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, s.getRoom_id());
             prstt.setString(2, s.getStudent_id());
             return prstt.executeUpdate() > 0;
@@ -104,7 +104,7 @@ public class StudentDao {
     public boolean updatetrangthai(StudentModel s) throws SQLException, ClassNotFoundException {
         String sql = "UPDATE student set status=?"
                 + " where student_id=?";
-        try ( Connection conn = connecting.getConnection();  PreparedStatement prstt = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prstt = conn.prepareStatement(sql);) {
             prstt.setString(1, s.getStatus());
             prstt.setString(2, s.getStudent_id());
             return prstt.executeUpdate() > 0;
@@ -123,9 +123,9 @@ public class StudentDao {
 
     public StudentModel FindManv(String maSV) throws SQLException, ClassNotFoundException {
         String sql = "select * from student where student_id=?";
-        try ( Connection conn = connecting.getConnection();  PreparedStatement prst = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prst = conn.prepareStatement(sql);) {
             prst.setString(1, maSV);
-            try ( ResultSet rs = prst.executeQuery();) {
+            try (ResultSet rs = prst.executeQuery();) {
                 if (rs.next()) {
                     StudentModel s = new StudentModel();
                     s.setStudent_id(rs.getString("student_id"));
@@ -138,9 +138,9 @@ public class StudentDao {
 
     public StudentModel FindMaSv(String maSV) throws SQLException, ClassNotFoundException {
         String sql = "select * from student where student_id=?";
-        try ( Connection conn = connecting.getConnection();  PreparedStatement prst = conn.prepareStatement(sql);) {
+        try (Connection conn = connecting.getConnection(); PreparedStatement prst = conn.prepareStatement(sql);) {
             prst.setString(1, maSV);
-            try ( ResultSet rs = prst.executeQuery();) {
+            try (ResultSet rs = prst.executeQuery();) {
                 if (rs.next()) {
                     StudentModel student = new StudentModel();
                     student.setStudent_id(rs.getString("student_id"));
@@ -156,7 +156,11 @@ public class StudentDao {
                     student.setViolation_count(rs.getInt("violation_count"));
                     student.setCheck_in_date(rs.getDate("check_in_date"));
                     student.setStatus(rs.getString("status"));
-                    student.setStudent_image(rs.getBytes("student_image"));
+//                    student.setStudent_image(rs.getBytes("student_image"));
+                    Blob blob = rs.getBlob("student_image");
+                    if (blob != null) {
+                        student.setStudent_image(blob.getBytes(1, (int) blob.length()));
+                    }
                     return student;
                 }
             }

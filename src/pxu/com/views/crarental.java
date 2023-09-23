@@ -5,16 +5,22 @@
 package pxu.com.views;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -22,7 +28,13 @@ import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pxu.com.dao.CrarentalDao;
 import pxu.com.dialogchek.showuser;
 import pxu.com.model.CrarentalModel;
@@ -183,8 +195,9 @@ public class crarental extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel18 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         txtTimHoTen = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -329,6 +342,17 @@ public class crarental extends javax.swing.JFrame {
 
         jPanel7.setLayout(new java.awt.GridLayout(1, 0, 10, 10));
 
+        jButton4.setBackground(new java.awt.Color(0, 0, 153));
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("Xuất excel");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton4);
+
         jButton2.setBackground(new java.awt.Color(0, 255, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
@@ -340,10 +364,11 @@ public class crarental extends javax.swing.JFrame {
         });
         jPanel7.add(jButton2);
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("Tìm kiếm:");
-        jPanel7.add(jLabel18);
+        jButton3.setBackground(new java.awt.Color(255, 153, 0));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Tìm kiếm:");
+        jPanel7.add(jButton3);
         jPanel7.add(txtTimHoTen);
 
         jPanel2.add(jPanel7, "card2");
@@ -397,10 +422,6 @@ public class crarental extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jFrame1.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
@@ -476,6 +497,63 @@ public class crarental extends javax.swing.JFrame {
         jFrame2.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jFrame1.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.showSaveDialog(this);
+            File saveFile = jFileChooser.getSelectedFile();
+
+            if (saveFile != null) {
+                saveFile = new File(saveFile.toString() + ".xlsx");
+                Workbook wb = new XSSFWorkbook();
+                Sheet sheet = wb.createSheet("customer");
+
+                // Tạo hàng tiêu đề cho bảng
+                Row rowCol = sheet.createRow(0);
+                for (int i = 0; i < tablenhaxe.getColumnCount(); i++) {
+                    Cell cell = rowCol.createCell(i);
+                    cell.setCellValue(tablenhaxe.getColumnName(i));
+                }
+
+                // Lấy tất cả dữ liệu từ bảng
+                for (int j = 0; j < tablenhaxe.getRowCount(); j++) {
+                    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tablenhaxe.getModel());
+                    tablenhaxe.setRowSorter(sorter);
+                    int modelRow = tablenhaxe.convertRowIndexToModel(j);
+                    Row row = sheet.createRow(j + 1);
+                    for (int k = 0; k < tablenhaxe.getColumnCount(); k++) {
+                        Object cellValue = tablenhaxe.getModel().getValueAt(modelRow, k);
+                        Cell cell = row.createCell(k);
+                        if (cellValue != null) {
+                            cell.setCellValue(cellValue.toString());
+                        }
+                    }
+                }
+                FileOutputStream out = new FileOutputStream(saveFile);
+                wb.write(out);
+                out.close();
+                openFile(saveFile.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+    public void openFile(String file) {
+        try {
+            File path = new File(file);
+            Desktop.getDesktop().open(path);
+        } catch (IOException ioe) {
+            System.out.println(ioe);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -525,6 +603,8 @@ public class crarental extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser datengaygui1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
@@ -536,7 +616,6 @@ public class crarental extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
