@@ -28,10 +28,10 @@ public class doimatkhau extends javax.swing.JFrame {
 
     private boolean checktk() throws SQLException, ClassNotFoundException {
         boolean kq = false;
-        String sql = "select * from USERS where username=? and password=?";
+        String sql = "select * from USERS where username=? and password=md5(?)";
         Connection conn = connecting.getConnection();
         PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, jComboBox1.getText());
+        pst.setString(1, txttendangnhap.getText());
         pst.setString(2, String.valueOf(mk.getPassword()));
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
@@ -73,7 +73,7 @@ public class doimatkhau extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JTextField();
+        txttendangnhap = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         mk = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
@@ -111,7 +111,7 @@ public class doimatkhau extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Tên đăng nhập:");
         jPanel5.add(jLabel2);
-        jPanel5.add(jComboBox1);
+        jPanel5.add(txttendangnhap);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Mật khẩu cũ:");
@@ -121,6 +121,12 @@ public class doimatkhau extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Nhập mật khẩu mới:");
         jPanel5.add(jLabel4);
+
+        mk1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mk1ActionPerformed(evt);
+            }
+        });
         jPanel5.add(mk1);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -176,7 +182,7 @@ public class doimatkhau extends javax.swing.JFrame {
             try {
                 if (checktk()) {
                     if (String.valueOf(mk1.getPassword()).equals(String.valueOf(mk2.getPassword()))) {
-                        String sqlChange = "UPDATE USERS SET password=md5(?) WHERE username=N'" + jComboBox1.getText() + "'";
+                        String sqlChange = "UPDATE USERS SET password=md5(?) WHERE username=N'" + txttendangnhap.getText() + "'";
                         try {
                             Connection conn = connecting.getConnection();
                             PreparedStatement pst = conn.prepareStatement(sqlChange);
@@ -199,7 +205,7 @@ public class doimatkhau extends javax.swing.JFrame {
             }
 
         }
-        this.dispose();
+//        this.dispose();
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -211,6 +217,10 @@ public class doimatkhau extends javax.swing.JFrame {
         h.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void mk1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mk1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mk1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,7 +260,6 @@ public class doimatkhau extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JTextField jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -266,5 +275,6 @@ public class doimatkhau extends javax.swing.JFrame {
     private javax.swing.JPasswordField mk;
     private javax.swing.JPasswordField mk1;
     private javax.swing.JPasswordField mk2;
+    private javax.swing.JTextField txttendangnhap;
     // End of variables declaration//GEN-END:variables
 }
